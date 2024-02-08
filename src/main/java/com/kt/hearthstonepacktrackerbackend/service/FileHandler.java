@@ -14,8 +14,14 @@ import java.nio.file.Paths;
 @Service
 public class FileHandler {
 
+    private final FullPackHistoryBuilder fullPackHistoryBuilder;
+
     private static final String FILE_PATH = "FullPackHistory.json";
     private static final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+
+    public FileHandler(FullPackHistoryBuilder fullPackHistoryBuilder) {
+        this.fullPackHistoryBuilder = fullPackHistoryBuilder;
+    }
 
     public FullPackHistory readFromFile() {
 
@@ -28,7 +34,7 @@ public class FileHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new FullPackHistory(); // Default value if file doesn't exist or there is an error reading it
+        return fullPackHistoryBuilder.buildInitialFullPackHistory();
     }
 
     public void writeToFile(FullPackHistory fullPackHistory) {

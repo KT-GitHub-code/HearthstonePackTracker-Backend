@@ -11,9 +11,6 @@ public class PackHistoryController {
 
     public PackService packService;
 
-    public PackHistoryController() {
-    }
-
     public PackHistoryController(PackService packService) {
         this.packService = packService;
     }
