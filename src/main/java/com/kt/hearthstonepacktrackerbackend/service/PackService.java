@@ -15,11 +15,12 @@ public class PackService {
     }
 
     public FullPackHistory getFullPackHistory() {
-        return null;
+        return readFullPackHistoryFromFile();
     }
 
     public PackHistory getPackHistory(PackType packType) {
-        return null;
+        FullPackHistory fullPackHistory = readFullPackHistoryFromFile();
+        return fullPackHistory.getPackHistories().get(packType);
     }
 
     private FullPackHistory readFullPackHistoryFromFile() {

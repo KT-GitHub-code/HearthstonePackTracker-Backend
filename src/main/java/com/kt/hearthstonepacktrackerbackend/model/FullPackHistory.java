@@ -1,9 +1,12 @@
 package com.kt.hearthstonepacktrackerbackend.model;
 
-import java.util.List;
+import java.util.Map;
 
 public class FullPackHistory {
 
-    public List<PackHistory> packHistories;
+    private Map<PackType,PackHistory> packHistories;
 
+    public Map<PackType, PackHistory> getPackHistories() {
+        return packHistories;
+    }
 }
