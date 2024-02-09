@@ -1,5 +1,8 @@
 package com.kt.hearthstonepacktrackerbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class PackHistory {
@@ -11,7 +14,12 @@ public class PackHistory {
 
     private List<Integer> runs;
 
-    public PackHistory(PackType packType, int currentCount,  List<Integer> runs) {
+    @JsonCreator
+    public PackHistory(@JsonProperty("packType") PackType packType) {
+        this.packType = packType;
+    }
+
+    public PackHistory(PackType packType, int currentCount, List<Integer> runs) {
         this.packType = packType;
         this.currentCount = currentCount;
         this.runs = runs;

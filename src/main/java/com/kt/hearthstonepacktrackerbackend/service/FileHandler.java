@@ -4,6 +4,8 @@ package com.kt.hearthstonepacktrackerbackend.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.kt.hearthstonepacktrackerbackend.model.FullPackHistory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,6 +17,9 @@ import java.nio.file.Paths;
 public class FileHandler {
 
     private final FullPackHistoryBuilder fullPackHistoryBuilder;
+
+    private static final Logger logger = LoggerFactory.getLogger(FileHandler.class);
+
 
     private static final String FILE_PATH = "FullPackHistory.json";
     private static final ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
@@ -29,12 +34,16 @@ public class FileHandler {
         try {
             if (Files.exists(filePath)) {
                 String content = Files.readString(filePath);
+                logger.info("Returning FullPackHistory from file...");
                 return objectMapper.readValue(content, FullPackHistory.class);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return fullPackHistoryBuilder.buildInitialFullPackHistory();
+        logger.info("Building FullPackHistory...");
+        FullPackHistory fullPackHistory = fullPackHistoryBuilder.buildInitialFullPackHistory();
+        writeToFile(fullPackHistory);
+        return readFromFile();
     }
 
     public void writeToFile(FullPackHistory fullPackHistory) {
