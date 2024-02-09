@@ -4,18 +4,36 @@ import java.util.List;
 
 public class PackHistory {
 
-    public final PackType packType;
+    private final PackType packType;
 
-    public int currentCount;
+    private int currentCount;
 
-    public Boolean isCurrentCounterOngoing;
 
-    public List<Integer> openings;
+    private List<Integer> runs;
 
-    public PackHistory(PackType packType, int currentCount, Boolean isCurrentCounterOngoing, List<Integer> openings) {
+    public PackHistory(PackType packType, int currentCount,  List<Integer> runs) {
         this.packType = packType;
         this.currentCount = currentCount;
-        this.isCurrentCounterOngoing = isCurrentCounterOngoing;
-        this.openings = openings;
+        this.runs = runs;
+    }
+
+    public PackType getPackType() {
+        return packType;
+    }
+
+    public int getCurrentCount() {
+        return currentCount;
+    }
+
+    public void setCurrentCount(int currentCount) {
+        this.currentCount = currentCount;
+    }
+
+    public List<Integer> getRuns() {
+        return runs;
+    }
+
+    public void setRuns(List<Integer> runs) {
+        this.runs = runs;
     }
 }

@@ -5,8 +5,8 @@ import com.kt.hearthstonepacktrackerbackend.model.PackHistory;
 import com.kt.hearthstonepacktrackerbackend.model.PackType;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -25,8 +25,7 @@ public class FullPackHistoryBuilder {
                     new PackHistory(
                             packType,
                             0,
-                            true,
-                            new ArrayList<>())
+                            new LinkedList<>())
             )
         );
 
