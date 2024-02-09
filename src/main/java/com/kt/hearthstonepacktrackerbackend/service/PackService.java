@@ -5,7 +5,7 @@ import com.kt.hearthstonepacktrackerbackend.model.PackHistory;
 import com.kt.hearthstonepacktrackerbackend.model.PackType;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 @Service
 public class PackService {
@@ -39,11 +39,11 @@ public class PackService {
 
         PackHistory packHistory = fullPackHistory.getPackHistories().get(packType);
 
-        LinkedList<Integer> runs = (LinkedList<Integer>) packHistory.getRuns();
+        ArrayList<Integer> runs = (ArrayList<Integer>) packHistory.getRuns();
 
         packHistory.setCurrentCount(packHistory.getCurrentCount() + 1);
 
-        runs.addLast(packHistory.getCurrentCount());
+        runs.add(packHistory.getCurrentCount());
 
         packHistory.setCurrentCount(0);
 
