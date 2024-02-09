@@ -60,6 +60,11 @@ public class PackService {
 
         PackHistory packHistory = fullPackHistory.getPackHistories().get(packType);
 
+        // bad luck protection: opening #40 must have a legendary card
+        if(packHistory.getCurrentCount() == 39){
+            return;
+        }
+
         packHistory.setCurrentCount(packHistory.getCurrentCount() + 1);
 
         fullPackHistory.getPackHistories().put(packType, packHistory);
