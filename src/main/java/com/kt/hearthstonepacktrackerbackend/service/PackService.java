@@ -5,6 +5,8 @@ import com.kt.hearthstonepacktrackerbackend.model.PackHistory;
 import com.kt.hearthstonepacktrackerbackend.model.PackType;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
+
 @Service
 public class PackService {
 
@@ -12,6 +14,14 @@ public class PackService {
 
     public PackService(FileHandler fileHandler) {
         this.fileHandler = fileHandler;
+    }
+
+    private FullPackHistory readFullPackHistoryFromFile() {
+        return fileHandler.readFromFile();
+    }
+
+    private void writeFullPackHistoryToFile(FullPackHistory fullPackHistory) {
+        fileHandler.writeToFile(fullPackHistory);
     }
 
     public FullPackHistory getFullPackHistory() {
@@ -23,8 +33,37 @@ public class PackService {
         return fullPackHistory.getPackHistories().get(packType);
     }
 
-    private FullPackHistory readFullPackHistoryFromFile() {
-        return fileHandler.readFromFile();
+    public void openPackWithLegendary(PackType packType) {
+
+        FullPackHistory fullPackHistory = readFullPackHistoryFromFile();
+
+        PackHistory packHistory = fullPackHistory.getPackHistories().get(packType);
+
+        LinkedList<Integer> runs = (LinkedList<Integer>) packHistory.getRuns();
+
+        packHistory.setCurrentCount(packHistory.getCurrentCount() + 1);
+
+        runs.addLast(packHistory.getCurrentCount());
+
+        packHistory.setCurrentCount(0);
+
+        packHistory.setRuns(runs);
+
+        fullPackHistory.getPackHistories().put(packType, packHistory);
+
+        writeFullPackHistoryToFile(fullPackHistory);
     }
 
+    public void openPackWithoutLegendary(PackType packType) {
+
+        FullPackHistory fullPackHistory = readFullPackHistoryFromFile();
+
+        PackHistory packHistory = fullPackHistory.getPackHistories().get(packType);
+
+        packHistory.setCurrentCount(packHistory.getCurrentCount() + 1);
+
+        fullPackHistory.getPackHistories().put(packType, packHistory);
+
+        writeFullPackHistoryToFile(fullPackHistory);
+    }
 }
