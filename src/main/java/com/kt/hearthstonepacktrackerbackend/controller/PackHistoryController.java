@@ -4,6 +4,9 @@ import com.kt.hearthstonepacktrackerbackend.model.FullPackHistory;
 import com.kt.hearthstonepacktrackerbackend.model.PackHistory;
 import com.kt.hearthstonepacktrackerbackend.model.PackType;
 import com.kt.hearthstonepacktrackerbackend.service.PackService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,12 +18,24 @@ public class PackHistoryController {
         this.packService = packService;
     }
 
+    @GetMapping("/api/fullpackhistory")
     public FullPackHistory getFullPackHistory() {
         return packService.getFullPackHistory();
     }
 
-    public PackHistory getPackHistory(PackType packType) {
+    @GetMapping("/api/packhistory/{packType}")
+    public PackHistory getPackHistory(@PathVariable PackType packType) {
         return packService.getPackHistory(packType);
+    }
+
+    @PostMapping("/api/openpackwithlegendary")
+    public void openPackWithLegendary(PackType packType) {
+        packService.openPackWithLegendary(packType);
+    }
+
+    @PostMapping("/api/openpackwithoutlegendary")
+    public void openPackWithoutLegendary(PackType packType) {
+        packService.openPackWithoutLegendary(packType);
     }
 
 }
