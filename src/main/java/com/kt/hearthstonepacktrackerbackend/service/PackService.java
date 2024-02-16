@@ -3,6 +3,8 @@ package com.kt.hearthstonepacktrackerbackend.service;
 import com.kt.hearthstonepacktrackerbackend.model.FullPackHistory;
 import com.kt.hearthstonepacktrackerbackend.model.PackHistory;
 import com.kt.hearthstonepacktrackerbackend.model.PackType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +13,9 @@ import java.util.ArrayList;
 public class PackService {
 
     private final FileHandler fileHandler;
+
+    private static final Logger logger = LoggerFactory.getLogger(FileHandler.class);
+
 
     public PackService(FileHandler fileHandler) {
         this.fileHandler = fileHandler;
@@ -33,7 +38,7 @@ public class PackService {
         return fullPackHistory.getPackHistories().get(packType);
     }
 
-    public void openPackWithLegendary(PackType packType) {
+    public PackHistory openPackWithLegendary(PackType packType) {
 
         FullPackHistory fullPackHistory = readFullPackHistoryFromFile();
 
@@ -52,9 +57,13 @@ public class PackService {
         fullPackHistory.getPackHistories().put(packType, packHistory);
 
         writeFullPackHistoryToFile(fullPackHistory);
+
+        logger.info("Pack with legendary opened: " + packType);
+
+        return packHistory;
     }
 
-    public void openPackWithoutLegendary(PackType packType) {
+    public PackHistory openPackWithoutLegendary(PackType packType) {
 
         FullPackHistory fullPackHistory = readFullPackHistoryFromFile();
 
@@ -62,7 +71,7 @@ public class PackService {
 
         // bad luck protection: opening #40 must have a legendary card
         if(packHistory.getCurrentCount() == 39){
-            return;
+            return packHistory;
         }
 
         packHistory.setCurrentCount(packHistory.getCurrentCount() + 1);
@@ -70,5 +79,9 @@ public class PackService {
         fullPackHistory.getPackHistories().put(packType, packHistory);
 
         writeFullPackHistoryToFile(fullPackHistory);
+
+        logger.info("Pack without legendary opened: " + packType);
+
+        return packHistory;
     }
 }

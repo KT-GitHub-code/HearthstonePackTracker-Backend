@@ -29,13 +29,13 @@ public class PackHistoryController {
     }
 
     @PostMapping("/api/openpackwithlegendary/{packType}")
-    public void openPackWithLegendary(@PathVariable PackType packType) {
-        packService.openPackWithLegendary(packType);
+    public PackHistory openPackWithLegendary(@PathVariable PackType packType) {
+        return packService.openPackWithLegendary(packType);
     }
 
     @PostMapping("/api/openpackwithoutlegendary/{packType}")
-    public void openPackWithoutLegendary(@PathVariable PackType packType) {
-        packService.openPackWithoutLegendary(packType);
+    public PackHistory openPackWithoutLegendary(@PathVariable PackType packType) {
+        return packService.openPackWithoutLegendary(packType);
     }
 
 }
