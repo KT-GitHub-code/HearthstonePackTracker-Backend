@@ -91,4 +91,96 @@ public class PackServiceTest {
         assertEquals(1, result.getCurrentCount());
     }
 
+    // openPackWithoutLegendary writes the updated pack history to file
+    @Test
+    public void test_write_to_file() {
+        // Arrange
+        FileHandler fileHandler = mock(FileHandler.class);
+        FullPackHistory fullPackHistory = new FullPackHistory();
+        PackType packType = PackType.Classic;
+        PackHistory packHistory = new PackHistory(packType, 0, new ArrayList<>());
+        fullPackHistory.getPackHistories().put(packType, packHistory);
+        when(fileHandler.readFromFile()).thenReturn(fullPackHistory);
+        PackService packService = new PackService(fileHandler);
+
+        // Act
+        packService.openPackWithoutLegendary(packType);
+
+        // Assert
+        verify(fileHandler, times(1)).writeToFile(fullPackHistory);
+    }
+
+    // openPackWithoutLegendary returns the updated pack history
+    @Test
+    public void test_return_updated_pack_history() {
+        // Arrange
+        FileHandler fileHandler = mock(FileHandler.class);
+        FullPackHistory fullPackHistory = new FullPackHistory();
+        PackType packType = PackType.Classic;
+        PackHistory packHistory = new PackHistory(packType, 0, new ArrayList<>());
+        fullPackHistory.getPackHistories().put(packType, packHistory);
+        when(fileHandler.readFromFile()).thenReturn(fullPackHistory);
+        PackService packService = new PackService(fileHandler);
+
+        // Act
+        PackHistory result = packService.openPackWithoutLegendary(packType);
+
+        // Assert
+        assertEquals(packHistory, result);
+    }
+
+    // openPackWithoutLegendary does not increment the current count of the pack history if the current count is 39
+    @Test
+    public void test_does_not_increment_current_count() {
+        // Arrange
+        FileHandler fileHandler = mock(FileHandler.class);
+        FullPackHistory fullPackHistory = new FullPackHistory();
+        PackType packType = PackType.Classic;
+        PackHistory packHistory = new PackHistory(packType, 39, new ArrayList<>());
+        fullPackHistory.getPackHistories().put(packType, packHistory);
+        when(fileHandler.readFromFile()).thenReturn(fullPackHistory);
+        PackService packService = new PackService(fileHandler);
+
+        // Act
+        PackHistory result = packService.openPackWithoutLegendary(packType);
+
+        // Assert
+        assertEquals(39, result.getCurrentCount());
+    }
+
+    // openPackWithoutLegendary returns the pack history without updating it if the current count is 39
+    @Test
+    public void test_return_pack_history_without_update() {
+        // Arrange
+        FileHandler fileHandler = mock(FileHandler.class);
+        FullPackHistory fullPackHistory = new FullPackHistory();
+        PackType packType = PackType.Classic;
+        PackHistory packHistory = new PackHistory(packType, 39, new ArrayList<>());
+        fullPackHistory.getPackHistories().put(packType, packHistory);
+        when(fileHandler.readFromFile()).thenReturn(fullPackHistory);
+        PackService packService = new PackService(fileHandler);
+
+        // Act
+        PackHistory result = packService.openPackWithoutLegendary(packType);
+
+        // Assert
+        assertEquals(packHistory, result);
+    }
+
+    // openPackWithoutLegendary throws an exception if the pack type is not found in the full pack history
+    @Test
+    public void test_throw_exception_if_pack_type_not_found() {
+        // Arrange
+        FileHandler fileHandler = mock(FileHandler.class);
+        FullPackHistory fullPackHistory = new FullPackHistory();
+        PackType packType = PackType.Classic;
+        when(fileHandler.readFromFile()).thenReturn(fullPackHistory);
+        PackService packService = new PackService(fileHandler);
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            packService.openPackWithoutLegendary(packType);
+        });
+    }
+
 }
