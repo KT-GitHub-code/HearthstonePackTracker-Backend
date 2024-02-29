@@ -19,7 +19,7 @@ public enum PackType {
     AshesOfOutland,
     ScholomanceAcademy,
     MadnessAtTheDarkmoonFaire,
-    ForgedIntheBarrens,
+    ForgedInTheBarrens,
     UnitedInStormwind,
     FracturedInAlteracValley,
     VoyageToTheSunkenCity,
